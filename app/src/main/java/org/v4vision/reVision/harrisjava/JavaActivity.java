@@ -151,7 +151,7 @@ public class JavaActivity extends Activity  implements Camera.PreviewCallback, S
         if(FPSDuration>0.5e9f)
         {//update FPS on the screen every 0.5 sec
             double RenderScriptFPS = 1e9/ frameDurationAverJNI;
-            getActionBar().setSubtitle(String.format("%dx%d: %4.1f FPS (RenderScript: %4.1f FPS)", imageWidth, imageHeight, AverFPS, RenderScriptFPS));
+            getActionBar().setSubtitle(String.format("%dx%d: %4.3f FPS (RenderScript: %4.3f FPS)", imageWidth, imageHeight, AverFPS, RenderScriptFPS));
             FPSDuration = 0;
         }
 

@@ -22,7 +22,7 @@ public class HarrisCornerDetector {
 
     private float cornerResponse(float[][] GIxx, float[][] GIyy, float[][] GIxy, int width, int height) {
         float k = 0.04f;
-        float threshold = 10000;
+        float threshold = 1000000;
 
         float response = (GIxx[width][height] * GIyy[width][height] - GIxy[width][height] * GIxy[width][height]) -
                 k * (GIxx[width][height] + GIyy[width][height]) * (GIxx[width][height] + GIyy[width][height]);
@@ -87,13 +87,9 @@ public class HarrisCornerDetector {
     }
 
     public Bitmap detect(byte[] data) {
-        double startingTime = System.currentTimeMillis();
-
         Bitmap outputBitmap = byteArrayToBitmap(data).copy(Bitmap.Config.ARGB_8888, true);
-        Log.d("ProcessData", "After copy");
 
         float[][] grayscale = new float[imageWidth][imageHeight];
-
         float[][] convolutionX = new float[imageWidth][imageHeight];
         float[][] convolutionY = new float[imageWidth][imageHeight];
         float[][] Ixx = new float[imageWidth][imageHeight];
@@ -115,8 +111,6 @@ public class HarrisCornerDetector {
             }
         }
 
-        Log.d("ProcessData", "Before Convolution Loop");
-
         // Convolution
         for(int height = 1; height < imageHeight - 1; height++) {
             for (int width = 1; width < imageWidth - 1; width++) {
@@ -134,10 +128,7 @@ public class HarrisCornerDetector {
                 Iyy[width][height] = convolutionY[width][height] * convolutionY[width][height];
                 Ixy[width][height] = convolutionX[width][height] * convolutionY[width][height];
             }
-            //Log.d("ProcessData", "Convolution Loop for height: " + height);
         }
-
-        Log.d("ProcessData", "After Convolution Loop");
 
         // Gaussian
         for(int height = 2; height < imageHeight - 2; height++) {
@@ -170,8 +161,6 @@ public class HarrisCornerDetector {
             }
 
         }
-
-        Log.d("JavaActivity", "Harris Finished with Total Time: " + (System.currentTimeMillis() - startingTime));
         return outputBitmap;
     }
 }
